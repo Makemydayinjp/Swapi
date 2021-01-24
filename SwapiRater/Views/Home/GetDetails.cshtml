@@ -1,0 +1,56 @@
+﻿@model SwapiRater.ViewModel.MovieViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<div class="text-center">
+    <h1 class="display-4">Lista Filmów Star Wars</h1>
+
+    <div>
+        <form action="/getDetails" method="get">
+            <select id="movieSelect" asp-for="Key" asp-items="ViewBag.MovieList" class="form-control" onchange="this.form.submit()">
+                <option value="">Wybierz film</option>
+            </select>
+
+            <div>
+                <p>Tytuł :                <b>@Model.Title </b></p>
+                <p>Producent:         <b>@Model.Producer</b></p>
+                <p>Reżyser:            <b>@Model.Director</b></p>
+                <p>Data wydania:    <b>@Model.ReleaseDate</b></p>
+                <br />
+                <p>Opening crawl:    <b>@Model.OpeningCrawl</b></p>
+
+                <br />
+                <p>
+                    Twoja ocena:    <b>
+                        @Html.DropDownListFor(m => m.Grade,
+                    new SelectList(Enumerable.Range(0, 10)),
+                    "", new { @class = "drop-down-for-grade" })
+                    </b>
+                </p>
+            </div>
+
+        </form>
+
+        <button id="rateButton">Oceń Film (10 najwyższa)</button>
+
+    </div>
+
+    <script>
+       $("#rateButton").click(function () {
+           var rate = $(".drop-down-for-grade option:selected").text();
+           var movieKey = $("#movieSelect option:selected").text();
+           $.post("/RateMovie/?rate=" + rate + "&key=" + movieKey)
+               .done(function (obj) {
+                   window.alert("Oceniono film!");
+               });
+       })
+    </script>
+
+</div>

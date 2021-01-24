@@ -1,0 +1,20 @@
+﻿@model SwapiRater.ViewModel.MovieViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Lista Filmów Star Wars</h1>
+
+    <div>
+        <form action="/getDetails" method="get">
+            <select id="movieSelect" asp-for="Key" asp-items="ViewBag.MovieList" class="form-control"
+                    onchange="this.form.submit()">
+                <option value="">Wybierz film</option>
+            </select>
+        </form>
+
+    </div>
+
+</div>
